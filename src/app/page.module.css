@@ -1,0 +1,192 @@
+.container {
+  display: flex;
+  height: 100vh;
+  background-color: #f3f4f6;
+  font-family: Arial, sans-serif;
+}
+
+/* --- BAGIAN FORM (Kiri) --- */
+.formSection {
+  width: 450px;
+  padding: 30px;
+  background: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  overflow-y: auto;
+  z-index: 10;
+}
+
+/* Update bagian ini agar tulisan input terlihat sangat jelas */
+.inputGroup input, 
+.inputGroup textarea,
+.selectInput {
+  padding: 10px 12px;
+  border: 1px solid #9ca3af; /* Warna border lebih tegas */
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #ffffff !important; /* Latar belakang putih bersih */
+  color: #000000 !important; /* TEKS HITAM PEKAT */
+  font-family: inherit;
+}
+
+/* Tambahkan ini untuk memastikan teks dropdown juga hitam */
+.selectInput option {
+  color: #000000;
+  background-color: #ffffff;
+}
+
+/* Fokus input agar lebih terlihat biru */
+.inputGroup input:focus, 
+.selectInput:focus {
+  border-color: #2563eb;
+  outline: 2px solid rgba(37, 99, 235, 0.2);
+}
+
+/* Memperbaiki label agar lebih kontras */
+.inputGroup label {
+  font-size: 13px;
+  font-weight: 700; /* Lebih tebal */
+  color: #1f2937; /* Abu-abu sangat gelap hampir hitam */
+  margin-bottom: 2px;
+}
+
+.inputGroup input, .inputGroup textarea {
+  padding: 8px 12px;
+  border: 1px solid #070707;
+  border-radius: 4px;
+  font-size: 13px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.row { display: flex; gap: 10px; }
+.row .inputGroup { flex: 1; }
+
+.printBtn {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* --- BAGIAN PREVIEW (Kanan) --- */
+.previewSection {
+  flex: 1;
+  padding: 40px;
+  background-color: #525659;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.kertasSurat {
+  background: white;
+  width: 21cm; 
+  min-height: 29.7cm;
+  padding: 1.5cm 2cm;
+  box-sizing: border-box;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  font-family: "Times New Roman", Times, serif;
+  color: black;
+}
+
+/* --- KOP SURAT --- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.logoArea { width: 2.2cm; flex-shrink: 0; }
+.logoImg { width: 100%; height: auto; }
+
+.headerText { flex: 1; padding: 0 10px; }
+.headerText h3 { margin: 0; font-size: 14pt; text-transform: uppercase; }
+.headerText h2 { margin: 0; font-size: 16pt; font-weight: bold; }
+.headerText p { margin: 2px 0; font-size: 9pt; font-style: italic; }
+
+.doubleLine {
+  border-top: 3px solid black;
+  border-bottom: 1px solid black;
+  height: 1px;
+  margin: 5px 0 20px 0;
+}
+
+/* --- ISI SURAT --- */
+.judulArea { text-align: center; margin-bottom: 20px; }
+.judulArea h4 { margin: 0; text-decoration: underline; font-size: 12pt; }
+
+.tablePolos { width: 100%; margin-bottom: 15px; border-collapse: collapse; }
+.tablePolos td { padding: 2px 0; vertical-align: top; font-size: 11pt; }
+.tablePolos td:first-child { width: 80px; }
+
+.centerText { text-align: center; font-weight: bold; letter-spacing: 2px; margin: 20px 0; }
+
+.tablePetugas {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+}
+.tablePetugas th, .tablePetugas td {
+  border: 1px solid black !important;
+  padding: 6px;
+  text-align: center;
+  font-size: 11pt;
+}
+
+.ttd {
+  margin-top: 40px;
+  width: 7cm;
+  float: right;
+  text-align: center;
+}
+
+/* --- PRINT RULES --- */
+@media print {
+  @page { size: A4; margin: 0; }
+  .noPrint { display: none !important; }
+  .container { display: block; background: white; }
+  .previewSection { padding: 0; background: white; overflow: visible; }
+  .kertasSurat { box-shadow: none; margin: 0; width: 100%; }
+}
+
+/* Container untuk label dan tombol silang */
+.petugasHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+/* Tombol Cancel (-) / Silang */
+.removeBtn {
+  background: #ef4444; /* Warna merah */
+  color: white;
+  border: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.removeBtn:hover {
+  background: #dc2626;
+}
+
+/* Memastikan label di dalam selector tetap hitam pekat */
+.petugasSelector label {
+  color: #000000 !important;
+  font-weight: bold;
+}

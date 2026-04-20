@@ -89,9 +89,10 @@ export default function SuratTugasGenerator() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  /const handleSelectPetugas = (index: number, namaYangDipilih: string) => {
+  const handleSelectPetugas = (index: number, namaYangDipilih: string) => {
     // Cari data pegawai berdasarkan nama
     const dataPegawai = DAFTAR_PEGAWAI.find(p => p.nama === namaYangDipilih);
+    // ... sisa kodenama === namaYangDipilih);
     
     // Salin state lama ke variabel baru
     const listBaru = [...petugasTerpilih];

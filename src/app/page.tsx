@@ -89,19 +89,27 @@ export default function SuratTugasGenerator() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // PERBAIKAN: Menambahkan tipe data : any agar build sukses
-  const handleSelectPetugas = (index: number, namaYangDipilih: string) => {
+  /const handleSelectPetugas = (index: number, namaYangDipilih: string) => {
+    // Cari data pegawai berdasarkan nama
     const dataPegawai = DAFTAR_PEGAWAI.find(p => p.nama === namaYangDipilih);
+    
+    // Salin state lama ke variabel baru
     const listBaru = [...petugasTerpilih];
     
     if (dataPegawai) {
+      // Jika ketemu, masukkan data lengkapnya
       listBaru[index] = { 
         nama: dataPegawai.nama, 
         nip: dataPegawai.nip, 
         jabatan: dataPegawai.jabatan 
       };
-      setPetugasTerpilih(listBaru);
+    } else {
+      // Jika user memilih opsi "-- Pilih Nama --" (kosong), kosongkan baris tersebut
+      listBaru[index] = { nama: "", nip: "", jabatan: "" };
     }
+
+    // Update state
+    setPetugasTerpilih(listBaru);
   };
 
   // PERBAIKAN: Menambahkan tipe data : any

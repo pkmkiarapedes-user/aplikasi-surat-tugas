@@ -82,33 +82,35 @@ export default function SuratTugasGenerator() {
 
   // State untuk menyimpan list petugas yang dipilih (maksimal 5)
   const [petugasTerpilih, setPetugasTerpilih] = useState([
-    { nama: "", nip: "", jabatan: "" } // Start dengan 1 baris kosong
+    { nama: "", nip: "", jabatan: "" }
   ]);
 
-  const handleGeneralChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-  setFormData({ ...formData, [e.target.name]: e.target.value });
-};
+  const handleGeneralChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-const handleSelectPetugas = (index: any, namaYangDipilih: any) => {
-  const dataPegawai = DAFTAR_PEGAWAI.find(p => p.nama === namaYangDipilih);
-  const listBaru = [...petugasTerpilih];
-  
-  if (dataPegawai) {
-    listBaru[index] = { 
-      nama: dataPegawai.nama, 
-      nip: dataPegawai.nip, 
-      jabatan: dataPegawai.jabatan 
-    };
-    setPetugasTerpilih(listBaru);
-  }
-};
+  // PERBAIKAN: Menambahkan tipe data : any agar build sukses
+  const handleSelectPetugas = (index: any, namaYangDipilih: any) => {
+    const dataPegawai = DAFTAR_PEGAWAI.find(p => p.nama === namaYangDipilih);
+    const listBaru = [...petugasTerpilih];
+    
+    if (dataPegawai) {
+      listBaru[index] = { 
+        nama: dataPegawai.nama, 
+        nip: dataPegawai.nip, 
+        jabatan: dataPegawai.jabatan 
+      };
+      setPetugasTerpilih(listBaru);
+    }
+  };
 
-   const hapusPetugas = (index: any) => {
-  if (petugasTerpilih.length > 1) {
-    const listBaru = petugasTerpilih.filter((_, i) => i !== index);
-    setPetugasTerpilih(listBaru);
-  }
-};
+  // PERBAIKAN: Menambahkan tipe data : any
+  const hapusPetugas = (index: any) => {
+    if (petugasTerpilih.length > 1) {
+      const listBaru = petugasTerpilih.filter((_, i) => i !== index);
+      setPetugasTerpilih(listBaru);
+    }
+  };
 
   const tambahBarisPetugas = () => {
     if (petugasTerpilih.length < 5) {
@@ -118,7 +120,6 @@ const handleSelectPetugas = (index: any, namaYangDipilih: any) => {
 
   return (
     <div className={styles.container}>
-      {/* FORM SECTION */}
       <div className={`${styles.formSection} ${styles.noPrint}`}>
         <h2 className={styles.title}>Data Surat Tugas</h2>
         
@@ -130,34 +131,33 @@ const handleSelectPetugas = (index: any, namaYangDipilih: any) => {
           </div>
           
           <h4 style={{margin: '10px 0 5px 0', color: '#000'}}>Daftar Petugas (Maks 5)</h4>
-{petugasTerpilih.map((item, index: number) => (
-  <div key={index} className={styles.petugasSelector}>
-      <div className={styles.petugasHeader}>
-        <label>Petugas {index + 1}</label>
-        {/* Tombol Cancel (-) hanya muncul jika petugas lebih dari 1 */}
-        {petugasTerpilih.length > 1 && (
-          <button 
-            type="button" // Tambahkan ini agar tidak submit form tidak sengaja
-            onClick={() => hapusPetugas(index)} 
-            className={styles.removeBtn}
-            title="Hapus Petugas"
-          >
-            ✕
-          </button>
-        )}
-      </div>
-      <select 
-        value={item.nama}
-        onChange={(e) => handleSelectPetugas(index, e.target.value)}
-        className={styles.selectInput}
-      >
-        <option value="">-- Pilih Nama Pegawai --</option>
-        {DAFTAR_PEGAWAI.map((p, i) => (
-          <option key={i} value={p.nama}>{p.nama}</option>
-        ))}
-      </select>
-  </div>
-))}
+          {petugasTerpilih.map((item, index: number) => (
+            <div key={index} className={styles.petugasSelector}>
+                <div className={styles.petugasHeader}>
+                  <label>Petugas {index + 1}</label>
+                  {petugasTerpilih.length > 1 && (
+                    <button 
+                      type="button"
+                      onClick={() => hapusPetugas(index)} 
+                      className={styles.removeBtn}
+                      title="Hapus Petugas"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+                <select 
+                  value={item.nama}
+                  onChange={(e) => handleSelectPetugas(index, e.target.value)}
+                  className={styles.selectInput}
+                >
+                  <option value="">-- Pilih Nama Pegawai --</option>
+                  {DAFTAR_PEGAWAI.map((p, i) => (
+                    <option key={i} value={p.nama}>{p.nama}</option>
+                  ))}
+                </select>
+            </div>
+          ))}
           
           {petugasTerpilih.length < 5 && (
             <button onClick={tambahBarisPetugas} className={styles.addBtn}>+ Tambah Petugas</button>
@@ -176,12 +176,10 @@ const handleSelectPetugas = (index: any, namaYangDipilih: any) => {
         </div>
       </div>
 
-      {/* PREVIEW SECTION */}
       <div className={styles.previewSection}>
         <div className={styles.kertasSurat}>
-          {/* Header Kop */}
           <div className={styles.header}>
-            <div className={styles.logoArea}><img src="/logo-pwk.png" className={styles.logoImg} /></div>
+            <div className={styles.logoArea}><img src="/logo-pwk.png" className={styles.logoImg} alt="logo-pwk" /></div>
             <div className={styles.headerText}>
               <h3>PEMERINTAH KABUPATEN PURWAKARTA</h3>
               <h3>DINAS KESEHATAN</h3>
@@ -189,7 +187,7 @@ const handleSelectPetugas = (index: any, namaYangDipilih: any) => {
               <span>Jalan Raya Kiarapedes No. 2 Km. 28 Kecamatan Kiarapedes</span>
               <p>Email: pkmkiarapedes20@gmail.com Kode Pos: 41175</p>
             </div>
-            <div className={styles.logoArea}><img src="/logo-pkm.png" className={styles.logoImg} /></div>
+            <div className={styles.logoArea}><img src="/logo-pkm.png" className={styles.logoImg} alt="logo-pkm" /></div>
           </div>
           <div className={styles.doubleLine}></div>
 
@@ -247,7 +245,6 @@ const handleSelectPetugas = (index: any, namaYangDipilih: any) => {
             <p>Kepala UPTD Puskesmas Kiarapedes</p>
             <br /><br />
             <p>TTE</p>
-            <p></p>
           </div>
         </div>
       </div>

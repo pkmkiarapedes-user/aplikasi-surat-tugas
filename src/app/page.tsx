@@ -105,7 +105,7 @@ export default function SuratTugasGenerator() {
   };
 
   // PERBAIKAN: Menambahkan tipe data : any
-  const hapusPetugas = (index: any) => {
+  const hapusPetugas = (index: number) => {
     if (petugasTerpilih.length > 1) {
       const listBaru = petugasTerpilih.filter((_, i) => i !== index);
       setPetugasTerpilih(listBaru);

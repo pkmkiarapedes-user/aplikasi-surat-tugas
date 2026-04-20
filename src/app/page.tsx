@@ -89,17 +89,26 @@ export default function SuratTugasGenerator() {
   setFormData({ ...formData, [e.target.name]: e.target.value });
 };
 
-  // Fungsi saat memilih nama di Dropdown
-  const handleSelectPetugas = (index, namaYangDipilih) => {
-    const dataPegawai = DAFTAR_PEGAWAI.find(p => p.nama === namaYangDipilih);
-    const listBaru = [...petugasTerpilih];
+const handleSelectPetugas = (index: any, namaYangDipilih: any) => {
+  const dataPegawai = DAFTAR_PEGAWAI.find(p => p.nama === namaYangDipilih);
+  const listBaru = [...petugasTerpilih];
+  
+  if (dataPegawai) {
     listBaru[index] = { 
       nama: dataPegawai.nama, 
       nip: dataPegawai.nip, 
       jabatan: dataPegawai.jabatan 
     };
     setPetugasTerpilih(listBaru);
-  };
+  }
+};
+
+   const hapusPetugas = (index: any) => {
+  if (petugasTerpilih.length > 1) {
+    const listBaru = petugasTerpilih.filter((_, i) => i !== index);
+    setPetugasTerpilih(listBaru);
+  }
+};
 
   const tambahBarisPetugas = () => {
     if (petugasTerpilih.length < 5) {
@@ -120,21 +129,35 @@ export default function SuratTugasGenerator() {
             <div className={styles.inputGroup}><label>Tahun</label><input name="tahun" value={formData.tahun} onChange={handleGeneralChange} /></div>
           </div>
           
-          <h4 style={{margin: '10px 0 5px 0'}}>Daftar Petugas</h4>
-          {petugasTerpilih.map((item, index) => (
-            <div key={index} className={styles.petugasSelector}>
-               <label>Petugas {index + 1}</label>
-               <select 
-                 onChange={(e) => handleSelectPetugas(index, e.target.value)}
-                 className={styles.selectInput}
-               >
-                 <option value="">-- Pilih Nama Pegawai --</option>
-                 {DAFTAR_PEGAWAI.map((p, i) => (
-                   <option key={i} value={p.nama}>{p.nama}</option>
-                 ))}
-               </select>
-            </div>
-          ))}
+          <h4 style={{margin: '10px 0 5px 0', color: '#000'}}>Daftar Petugas (Maks 5)</h4>
+{petugasTerpilih.map((item, index: number) => (
+  <div key={index} className={styles.petugasSelector}>
+      <div className={styles.petugasHeader}>
+        <label>Petugas {index + 1}</label>
+        {/* Tombol Cancel (-) hanya muncul jika petugas lebih dari 1 */}
+        {petugasTerpilih.length > 1 && (
+          <button 
+            type="button" // Tambahkan ini agar tidak submit form tidak sengaja
+            onClick={() => hapusPetugas(index)} 
+            className={styles.removeBtn}
+            title="Hapus Petugas"
+          >
+            ✕
+          </button>
+        )}
+      </div>
+      <select 
+        value={item.nama}
+        onChange={(e) => handleSelectPetugas(index, e.target.value)}
+        className={styles.selectInput}
+      >
+        <option value="">-- Pilih Nama Pegawai --</option>
+        {DAFTAR_PEGAWAI.map((p, i) => (
+          <option key={i} value={p.nama}>{p.nama}</option>
+        ))}
+      </select>
+  </div>
+))}
           
           {petugasTerpilih.length < 5 && (
             <button onClick={tambahBarisPetugas} className={styles.addBtn}>+ Tambah Petugas</button>

@@ -85,9 +85,9 @@ export default function SuratTugasGenerator() {
     { nama: "", nip: "", jabatan: "" } // Start dengan 1 baris kosong
   ]);
 
-  const handleGeneralChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleGeneralChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  setFormData({ ...formData, [e.target.name]: e.target.value });
+};
 
   // Fungsi saat memilih nama di Dropdown
   const handleSelectPetugas = (index, namaYangDipilih) => {

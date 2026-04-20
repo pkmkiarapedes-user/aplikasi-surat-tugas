@@ -90,7 +90,7 @@ export default function SuratTugasGenerator() {
   };
 
   // PERBAIKAN: Menambahkan tipe data : any agar build sukses
-  const handleSelectPetugas = (index: any, namaYangDipilih: any) => {
+  const handleSelectPetugas = (index: number, namaYangDipilih: string) => {
     const dataPegawai = DAFTAR_PEGAWAI.find(p => p.nama === namaYangDipilih);
     const listBaru = [...petugasTerpilih];
     

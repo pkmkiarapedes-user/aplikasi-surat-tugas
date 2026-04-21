@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import styles from "./page.module.css";
+import build from "next/dist/build";
 
 // Tetap mempertahankan daftar pegawai lengkap Anda
 const DAFTAR_PEGAWAI = [
@@ -67,7 +68,7 @@ const DAFTAR_PEGAWAI = [
   { nama: "Yeni Heryani", nip: "198510212025212047", jabatan: "Operator Layanan Operasional" }
 ];
 
-const DAFTAR_HARI = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
+const DAFTAR_HARI = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
 export default function FinalSrikandiUI() {
   const [formData, setFormData] = useState({
@@ -256,7 +257,6 @@ export default function FinalSrikandiUI() {
             </div>
           </section>
         </div>
-      </main>
     </div>
   );
 }

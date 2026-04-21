@@ -98,13 +98,7 @@ export default function FinalSrikandiUI() {
 
   return (
     <div className={styles.appContainer}>
-            {/* MAIN CONTENT */}
-      <main className={styles.mainContent}>
-        <header className={`${styles.topHeader} ${styles.noPrint}`}>
-          <div className={styles.breadcrumb}>Registrasi Naskah - Surat Tugas</div>
-          <div className={styles.userProfile}>👤 Admin Puskesmas</div>
-        </header>
-
+            
         <div className={styles.workspace}>
           {/* FORM AREA (TENGAH) */}
           <section className={`${styles.formContainer} ${styles.noPrint}`}>
@@ -190,15 +184,15 @@ export default function FinalSrikandiUI() {
             <div className={styles.kertasSurat}>
               {/* Kop Surat */}
               <div className={styles.headerKop}>
-                <img src="/logo-pwk.png" className={styles.logoKop} alt="logo-pwk" />
+                <img src="/logo-pwk.png" className={styles.logoKop} style={{ width: '80px', height: 'auto' }} alt="logo-pwk" />
                 <div className={styles.headerText}>
                   <h4 style={{ margin: 0, fontSize: '14pt' }}>PEMERINTAH KABUPATEN PURWAKARTA</h4>
                   <h4 style={{ margin: 0, fontSize: '14pt' }}>DINAS KESEHATAN</h4>
                   <h2 style={{ margin: 0, fontSize: '16pt' }}><strong>UPTD PUSKESMAS KIARAPEDES</strong></h2>
-                  <p style={{ margin: 0, fontSize: '10pt', fontStyle: 'italic' }}>Jalan Raya Kiarapedes No. 2 Km. 28 Kecamatan Kiarapedes</p>
+                  <p style={{ margin: 0, fontSize: '10pt', }}>Jalan Raya Kiarapedes No. 2 Km. 28 Kecamatan Kiarapedes</p>
                   <p style={{ margin: 0, fontSize: '10pt' }}>Email: pkmkiarapedes20@gmail.com Kode Pos: 41175</p>
                 </div>
-                <img src="/logo-pkm.png" className={styles.logoKop} alt="logo-pkm" />
+                <img src="/logo-pkm.png" className={styles.logoKop} style={{ width: '80px', height: 'auto' }} alt="logo-pkm" />
               </div>
               <div className={styles.doubleLine}></div>
 
@@ -241,7 +235,7 @@ export default function FinalSrikandiUI() {
                 </tbody>
               </table>
 
-              <p style={{ marginTop: '15px' }}>Untuk Melaksanakan {formData.tugas || "...................................................."}, yang akan dilaksanakan pada:</p>
+              <p style={{ marginTop: '15px' }}>Untuk {formData.tugas || "...................................................."}, yang akan dilaksanakan pada:</p>
               <table style={{ width: '100%', border: 'none' }}>
                 <tbody>
                   <tr><td width="100">Hari</td><td>: {formData.hari || "...................."}</td></tr>

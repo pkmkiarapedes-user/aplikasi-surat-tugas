@@ -1,9 +1,8 @@
 "use client";
-
 import { useState } from "react";
 import styles from "./page.module.css";
 
-// 1. Data Database Pegawai
+// Tetap mempertahankan daftar pegawai lengkap Anda
 const DAFTAR_PEGAWAI = [
   { nama: "Ajat Hermawan", nip: "198102202025211054", jabatan: "Operator Layanan Operasional" },
   { nama: "Anas Muhiban, S.E.", nip: "199703242025211057", jabatan: "Penata Layanan Operasional" },
@@ -68,7 +67,9 @@ const DAFTAR_PEGAWAI = [
   { nama: "Yeni Heryani", nip: "198510212025212047", jabatan: "Operator Layanan Operasional" }
 ];
 
-export default function SuratTugasGenerator() {
+const DAFTAR_HARI = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
+
+export default function FinalSrikandiUI() {
   const [formData, setFormData] = useState({
     noUrut: "001",
     bulanRomawi: "IV",
@@ -80,183 +81,188 @@ export default function SuratTugasGenerator() {
     tanggalDibuat: "",
   });
 
-  // State untuk menyimpan list petugas yang dipilih (maksimal 5)
-  const [petugasTerpilih, setPetugasTerpilih] = useState([
-    { nama: "", nip: "", jabatan: "" }
-  ]);
+  const [petugasTerpilih, setPetugasTerpilih] = useState([{ nama: "", nip: "", jabatan: "" }]);
+
+  // Fitur Otomatis 3 Digit
+  const handleBlurNoUrut = (e: React.FocusEvent<HTMLInputElement>) => {
+    const val = e.target.value.replace(/[^0-9]/g, "");
+    if (val) {
+      setFormData(prev => ({ ...prev, noUrut: val.padStart(3, "0") }));
+    }
+  };
 
   const handleGeneralChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSelectPetugas = (index: number, namaYangDipilih: string) => {
-    // Cari data pegawai berdasarkan nama
-    const dataPegawai = DAFTAR_PEGAWAI.find(p => p.nama === namaYangDipilih);
-    // ... sisa kodenama === namaYangDipilih);
-    
-    // Salin state lama ke variabel baru
-    const listBaru = [...petugasTerpilih];
-    
-    if (dataPegawai) {
-      // Jika ketemu, masukkan data lengkapnya
-      listBaru[index] = { 
-        nama: dataPegawai.nama, 
-        nip: dataPegawai.nip, 
-        jabatan: dataPegawai.jabatan 
-      };
-    } else {
-      // Jika user memilih opsi "-- Pilih Nama --" (kosong), kosongkan baris tersebut
-      listBaru[index] = { nama: "", nip: "", jabatan: "" };
-    }
-
-    // Update state
-    setPetugasTerpilih(listBaru);
-  };
-
-  // PERBAIKAN: Menambahkan tipe data : any
-  const hapusPetugas = (index: number) => {
-    if (petugasTerpilih.length > 1) {
-      const listBaru = petugasTerpilih.filter((_, i) => i !== index);
-      setPetugasTerpilih(listBaru);
-    }
-  };
-
-  const tambahBarisPetugas = () => {
-    if (petugasTerpilih.length < 5) {
-      setPetugasTerpilih([...petugasTerpilih, { nama: "", nip: "", jabatan: "" }]);
-    }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <div className={styles.container}>
-      <div className={`${styles.formSection} ${styles.noPrint}`}>
-        <h2 className={styles.title}>Data Surat Tugas</h2>
-        
-        <div className={styles.form}>
-          <div className={styles.row}>
-            <div className={styles.inputGroup}><label>No Urut</label><input name="noUrut" value={formData.noUrut} onChange={handleGeneralChange} /></div>
-            <div className={styles.inputGroup}><label>Bulan</label><input name="bulanRomawi" value={formData.bulanRomawi} onChange={handleGeneralChange} /></div>
-            <div className={styles.inputGroup}><label>Tahun</label><input name="tahun" value={formData.tahun} onChange={handleGeneralChange} /></div>
-          </div>
-          
-          <h4 style={{margin: '10px 0 5px 0', color: '#000'}}>Daftar Petugas (Maks 5)</h4>
-          {petugasTerpilih.map((item, index: number) => (
-            <div key={index} className={styles.petugasSelector}>
-                <div className={styles.petugasHeader}>
-                  <label>Petugas {index + 1}</label>
-                  {petugasTerpilih.length > 1 && (
-                    <button 
-                      type="button"
-                      onClick={() => hapusPetugas(index)} 
-                      className={styles.removeBtn}
-                      title="Hapus Petugas"
-                    >
-                      ✕
-                    </button>
+    <div className={styles.appContainer}>
+            {/* MAIN CONTENT */}
+      <main className={styles.mainContent}>
+        <header className={`${styles.topHeader} ${styles.noPrint}`}>
+          <div className={styles.breadcrumb}>Registrasi Naskah - Surat Tugas</div>
+          <div className={styles.userProfile}>👤 Admin Puskesmas</div>
+        </header>
+
+        <div className={styles.workspace}>
+          {/* FORM AREA (TENGAH) */}
+          <section className={`${styles.formContainer} ${styles.noPrint}`}>
+            <div className={styles.card}>
+              <h3 className={styles.cardTitle}>Detail Isi Naskah</h3>
+              
+              <div className={styles.formGrid}>
+                {/* Identitas Nomor */}
+                <div className={styles.inputGroup}>
+                  <label>No Urut (Format: 001)</label>
+                  <input name="noUrut" value={formData.noUrut} onChange={handleGeneralChange} onBlur={handleBlurNoUrut} />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label>Bulan (Romawi)</label>
+                  <input name="bulanRomawi" value={formData.bulanRomawi} onChange={handleGeneralChange} />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label>Tahun</label>
+                  <input name="tahun" value={formData.tahun} onChange={handleGeneralChange} />
+                </div>
+
+                {/* Daftar Petugas */}
+                <div className={styles.inputGroupFull}>
+                  <label>Daftar Petugas (Maks 5)</label>
+                  {petugasTerpilih.map((p, idx) => (
+                    <div key={idx} className={styles.petugasRow}>
+                      <select 
+                        value={p.nama}
+                        onChange={(e) => {
+                          const selected = DAFTAR_PEGAWAI.find(item => item.nama === e.target.value);
+                          const newArr = [...petugasTerpilih];
+                          newArr[idx] = selected || { nama: "", nip: "", jabatan: "" };
+                          setPetugasTerpilih(newArr);
+                        }} 
+                        className={styles.selectInput}
+                      >
+                        <option value="">-- Pilih Nama Pegawai --</option>
+                        {DAFTAR_PEGAWAI.map(pg => <option key={pg.nip} value={pg.nama}>{pg.nama}</option>)}
+                      </select>
+                      {petugasTerpilih.length > 1 && (
+                        <button className={styles.removeBtn} onClick={() => setPetugasTerpilih(petugasTerpilih.filter((_, i) => i !== idx))}>✕</button>
+                      )}
+                    </div>
+                  ))}
+                  {petugasTerpilih.length < 5 && (
+                    <button className={styles.addBtn} onClick={() => setPetugasTerpilih([...petugasTerpilih, { nama: "", nip: "", jabatan: "" }])}>+ Tambah Petugas</button>
                   )}
                 </div>
-                <select 
-                  value={item.nama}
-                  onChange={(e) => handleSelectPetugas(index, e.target.value)}
-                  className={styles.selectInput}
-                >
-                  <option value="">-- Pilih Nama Pegawai --</option>
-                  {DAFTAR_PEGAWAI.map((p, i) => (
-                    <option key={i} value={p.nama}>{p.nama}</option>
+
+                {/* Rincian Kegiatan */}
+                <div className={styles.inputGroupFull}>
+                  <label>Tugas</label>
+                  <textarea name="tugas" value={formData.tugas} onChange={handleGeneralChange} placeholder="Masukkan rincian tugas..." rows={3} />
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label>Hari</label>
+                  <select name="hari" value={formData.hari} onChange={handleGeneralChange} className={styles.selectInput}>
+                    <option value="">-- Pilih Hari --</option>
+                    {DAFTAR_HARI.map(h => <option key={h} value={h}>{h}</option>)}
+                  </select>
+                </div>
+                <div className={styles.inputGroup}>
+                  <label>Tanggal Kegiatan</label>
+                  <input type="date" name="tanggalTugas" value={formData.tanggalTugas} onChange={handleGeneralChange} />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label>Tempat</label>
+                  <input name="tempat" value={formData.tempat} onChange={handleGeneralChange} />
+                </div>
+                <div className={styles.inputGroupFull}>
+                  <label>Tanggal Surat Dibuat</label>
+                  <input type="date" name="tanggalDibuat" value={formData.tanggalDibuat} onChange={handleGeneralChange} />
+                </div>
+              </div>
+              
+              <button className={styles.btnCetak} onClick={() => window.print()}>🖨️ Cetak Surat Tugas</button>
+            </div>
+          </section>
+
+          {/* PREVIEW AREA (KANAN) - Mempertahankan Layout Preview Lengkap */}
+          <section className={styles.previewContainer}>
+            <div className={styles.kertasSurat}>
+              {/* Kop Surat */}
+              <div className={styles.headerKop}>
+                <img src="/logo-pwk.png" className={styles.logoKop} alt="logo-pwk" />
+                <div className={styles.headerText}>
+                  <h4 style={{ margin: 0, fontSize: '14pt' }}>PEMERINTAH KABUPATEN PURWAKARTA</h4>
+                  <h4 style={{ margin: 0, fontSize: '14pt' }}>DINAS KESEHATAN</h4>
+                  <h2 style={{ margin: 0, fontSize: '16pt' }}><strong>UPTD PUSKESMAS KIARAPEDES</strong></h2>
+                  <p style={{ margin: 0, fontSize: '10pt', fontStyle: 'italic' }}>Jalan Raya Kiarapedes No. 2 Km. 28 Kecamatan Kiarapedes</p>
+                  <p style={{ margin: 0, fontSize: '10pt' }}>Email: pkmkiarapedes20@gmail.com Kode Pos: 41175</p>
+                </div>
+                <img src="/logo-pkm.png" className={styles.logoKop} alt="logo-pkm" />
+              </div>
+              <div className={styles.doubleLine}></div>
+
+              {/* Judul Surat */}
+              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                <h4 style={{ textDecoration: 'underline', marginBottom: '0', fontSize: '14pt' }}>SURAT TUGAS</h4>
+                <p style={{ margin: 0 }}>No: 440/{formData.noUrut}/ST/PKM-KPDS/{formData.bulanRomawi}/{formData.tahun}</p>
+              </div>
+
+              <p>Yang bertanda tangan di bawah ini:</p>
+              <table style={{ width: '100%', border: 'none' }}>
+                <tbody>
+                  <tr><td width="100">Nama</td><td>: H. Ujang Sutrisna, S. Kep., Ners., M. Kep.</td></tr>
+                  <tr><td>NIP</td><td>: 197707132006041011</td></tr>
+                  <tr><td>Jabatan</td><td>: Kepala UPTD Puskesmas Kiarapedes</td></tr>
+                </tbody>
+              </table>
+
+              <p style={{ textAlign: 'center', fontWeight: 'bold', margin: '15px 0' }}>M E N U G A S K A N</p>
+              <p>Kepada:</p>
+              
+              <table className={styles.tablePetugasPreview}>
+  <thead>
+    <tr>
+      <th style={{ width: '40px', textAlign: 'center' }}>No</th>
+      <th style={{ width: '250px' }}>Nama</th>
+      <th style={{ width: '200px' }}>NIP / NIPPPK</th>
+      <th>Jabatan</th>
+    </tr>
+  </thead>
+  <tbody>
+                  {petugasTerpilih.map((p, idx) => (
+                    <tr key={idx}>
+                      <td style={{textAlign:'center'}}>{idx + 1}</td>
+                      <td>{p.nama || ".............................."}</td>
+                      <td>{p.nip || ".............................."}</td>
+                      <td>{p.jabatan || ".............................."}</td>
+                    </tr>
                   ))}
-                </select>
+                </tbody>
+              </table>
+
+              <p style={{ marginTop: '15px' }}>Untuk Melaksanakan {formData.tugas || "...................................................."}, yang akan dilaksanakan pada:</p>
+              <table style={{ width: '100%', border: 'none' }}>
+                <tbody>
+                  <tr><td width="100">Hari</td><td>: {formData.hari || "...................."}</td></tr>
+                  <tr><td>Tanggal</td><td>: {formData.tanggalTugas || "...................."}</td></tr>
+                  <tr><td>Tempat</td><td>: {formData.tempat || "...................."}</td></tr>
+                </tbody>
+              </table>
+
+              <p style={{ marginTop: '20px' }}>Demikian surat tugas ini dibuat untuk dilaksanakan sebagaimana mestinya dengan penuh rasa tanggung jawab.</p>
+
+              <div className={styles.ttdArea}>
+                <p>Purwakarta, {formData.tanggalDibuat || "...................."}</p>
+                <p>Kepala UPTD Puskesmas Kiarapedes,</p>
+                <div style={{ height: '60px' }}></div>
+                <p>TTE</p>
+                <p></p>
+              </div>
             </div>
-          ))}
-          
-          {petugasTerpilih.length < 5 && (
-            <button onClick={tambahBarisPetugas} className={styles.addBtn}>+ Tambah Petugas</button>
-          )}
-
-          <hr />
-          <div className={styles.inputGroup}><label>Tugas</label><textarea name="tugas" onChange={handleGeneralChange} /></div>
-          <div className={styles.row}>
-            <div className={styles.inputGroup}><label>Hari</label><input name="hari" onChange={handleGeneralChange} /></div>
-            <div className={styles.inputGroup}><label>Tanggal Kegiatan</label><input name="tanggalTugas" onChange={handleGeneralChange} /></div>
-          </div>
-          <div className={styles.inputGroup}><label>Tempat</label><input name="tempat" onChange={handleGeneralChange} /></div>
-          <div className={styles.inputGroup}><label>Tanggal Surat</label><input name="tanggalDibuat" onChange={handleGeneralChange} /></div>
-
-          <button onClick={() => window.print()} className={styles.printBtn}>Cetak Surat</button>
+          </section>
         </div>
-      </div>
-
-      <div className={styles.previewSection}>
-        <div className={styles.kertasSurat}>
-          <div className={styles.header}>
-            <div className={styles.logoArea}><img src="/logo-pwk.png" className={styles.logoImg} alt="logo-pwk" /></div>
-            <div className={styles.headerText}>
-              <h3>PEMERINTAH KABUPATEN PURWAKARTA</h3>
-              <h3>DINAS KESEHATAN</h3>
-              <h2>UPTD PUSKESMAS KIARAPEDES</h2>
-              <span>Jalan Raya Kiarapedes No. 2 Km. 28 Kecamatan Kiarapedes</span>
-              <p>Email: pkmkiarapedes20@gmail.com Kode Pos: 41175</p>
-            </div>
-            <div className={styles.logoArea}><img src="/logo-pkm.png" className={styles.logoImg} alt="logo-pkm" /></div>
-          </div>
-          <div className={styles.doubleLine}></div>
-
-          <div className={styles.judulArea}>
-            <h4 className={styles.centerText}>SURAT TUGAS</h4>
-            <p>No: 440/{formData.noUrut}/ST/PKM-KPDS/{formData.bulanRomawi}/{formData.tahun}</p>
-          </div>
-
-          <p>Yang bertanda tangan di bawah ini:</p>
-          <table className={styles.tablePolos}>
-            <tbody>
-              <tr><td>Nama</td><td>: H. Ujang Sutrisna, S. Kep., Ners., M. Kep.</td></tr>
-              <tr><td>NIP</td><td>: 197707132006041011</td></tr>
-              <tr><td>Jabatan</td><td>: Kepala UPTD Puskesmas Kiarapedes</td></tr>
-            </tbody>
-          </table>
-
-          <div className={styles.centerText}>M E N U G A S K A N</div>
-
-          <p>kepada:</p>
-          <table className={styles.tablePetugas}>
-            <thead>
-              <tr>
-                <th style={{width: '30px'}}>No</th>
-                <th>Nama</th>
-                <th>NIP / NIPPPK</th>
-                <th>Jabatan</th>
-              </tr>
-            </thead>
-            <tbody>
-              {petugasTerpilih.map((p, idx) => (
-                <tr key={idx}>
-                  <td>{idx + 1}</td>
-                  <td style={{textAlign: 'left'}}>{p.nama || "...................."}</td>
-                  <td>{p.nip || "...................."}</td>
-                  <td style={{textAlign: 'left'}}>{p.jabatan || "...................."}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <p style={{marginTop: '15px'}}>Untuk {formData.tugas || "...................."}, pada:</p>
-          <table className={styles.tablePolos}>
-            <tbody>
-              <tr><td>Hari</td><td>: {formData.hari || "...................."}</td></tr>
-              <tr><td>Tanggal</td><td>: {formData.tanggalTugas || "...................."}</td></tr>
-              <tr><td>Tempat</td><td>: {formData.tempat || "...................."}</td></tr>
-            </tbody>
-          </table>
-
-          <p style={{marginTop: '20px'}}>Demikian surat ini dibuat untuk dilaksanakan sebagaimana mestinya dengan penuh rasa tanggung jawab.</p>
-
-          <div className={styles.ttd}>
-            <p>Purwakarta, {formData.tanggalDibuat || "...................."}</p>
-            <p>Kepala UPTD Puskesmas Kiarapedes</p>
-            <br /><br />
-            <p>TTE</p>
-          </div>
-        </div>
-      </div>
+      </main>
     </div>
   );
 }

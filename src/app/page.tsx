@@ -200,7 +200,7 @@ export default function FinalSrikandiUI() {
               {/* Judul Surat */}
               <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                 <h4 style={{ textDecoration: 'underline', marginBottom: '0', fontSize: '14pt' }}>SURAT TUGAS</h4>
-                <p style={{ margin: 0 }}>No: 440/{formData.noUrut}/ST/PKM-KPDS/{formData.bulanRomawi}/{formData.tahun}</p>
+                <p style={{ margin: 0 }}>No: 800/{formData.noUrut}/ST/PKM-KPDS/{formData.bulanRomawi}/{formData.tahun}</p>
               </div>
 
               <p>Yang bertanda tangan di bawah ini:</p>
